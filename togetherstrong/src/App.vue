@@ -15,7 +15,4 @@
 }
 </style>
 
-<style lang="scss">
-#app {
-}
-</style>
+<style scoped lang="scss"></style>
