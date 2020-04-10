@@ -1,26 +1,31 @@
 <template>
-  <div class="Welcome">
-    <!-- Title with pictures left and right -->
+  <!-- Title with pictures left and right -->
+  <div class="TitleBanner">
+    <!-- Container -->
     <div class="title-container">
-      <inline-svg :src="leftSvg" id="leftSvg" />
+      <!-- Title text -->
       <div class="title">
         <div class="title-part0">
-          <svg viewBox="0 0 57 15">
-            <text x="0" y="11">Together</text>
+          <svg viewBox="0 0 75 18">
+            <text x="50%" y="12" text-anchor="middle">together</text>
           </svg>
         </div>
         <div class="title-part1">
-          <svg viewBox="0 0 43 15">
-            <text x="0" y="11">Strong</text>
+          <svg viewBox="0 0 56 19">
+            <text x="50%" y="13" text-anchor="middle">strong</text>
           </svg>
         </div>
         <div class="title-part2">
-          <svg viewBox="0 0 56 18">
-            <text x="0" y="11">.chat</text>
+          <svg viewBox="0 0 95 18">
+            <text x="50%" y="12" text-anchor="middle">.app</text>
           </svg>
         </div>
       </div>
-      <inline-svg :src="rightSvg" id="rightSvg" />
+      <!-- Sides pictures -->
+      <div class="images-container">
+        <inline-svg :src="leftSvg" class="side-image" id="leftSvg" />
+        <inline-svg :src="rightSvg" class="side-image" id="rightSvg" />
+      </div>
     </div>
   </div>
 </template>
@@ -46,14 +51,77 @@ export default class TitleBanner extends Vue {
 </script>
 
 <style scoped lang="scss">
+.TitleBanner {
+  margin: 0 auto 0 auto;
+  width: 100%;
+  max-width: 700px;
+}
+
 .title-container {
+  position: relative;
+  width: 100%;
+  height: 275px;
+}
+
+.title {
+  position: absolute;
+  top: 45%;
+  left: 35%;
+  width: 30%;
+  z-index: 2;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+
+  font-family: 'Poppins', sans-serif;
+  font-weight: 900;
+
+  .title-part {
+    font-weight: 600;
+
+    &1 {
+      margin-top: -14px;
+      margin-bottom: -25;
+    }
+
+    &2 {
+      margin-top: -20px;
+      fill: red;
+    }
+  }
+
+  svg {
+    text-align: center;
+    text {
+      margin: 0 auto 0 auto;
+    }
+  }
+}
+
+.images-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+
+  z-index: 1;
   display: flex;
   justify-content: space-between;
 }
-#leftSvg {
-  width: 45%;
+
+$img-negative-margin: 50px;
+
+.side-image {
+  width: 60%;
+  max-width: 250px;
 }
+
+#leftSvg {
+  margin-left: -$img-negative-margin;
+}
+
 #rightSvg {
-  width: 45%;
+  margin-right: -$img-negative-margin;
 }
 </style>

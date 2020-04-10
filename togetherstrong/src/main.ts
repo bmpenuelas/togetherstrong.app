@@ -7,8 +7,13 @@ import i18n from './i18n';
 import vuesax from 'vuesax';
 import 'vuesax/dist/vuesax.css';
 import 'material-icons/iconfont/material-icons.css';
+import vuesvgicon from 'vue-svgicon';
 
 Vue.use(vuesax);
+
+Vue.use(vuesvgicon, {
+  classPrefix: 'SvgIcon-',
+});
 
 Vue.config.productionTip = false;
 

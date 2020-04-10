@@ -1,11 +1,12 @@
 <template>
   <div class="home">
-    <TitleBanner />
+    <div class="first-screen">
+      <TitleBanner />
+    </div>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
 import TitleBanner from '@/components/TitleBanner.vue';
 
 export default {
@@ -15,3 +16,9 @@ export default {
   },
 };
 </script>
+
+<style scoped lang="scss">
+.first-screen {
+  height: 100vh;
+}
+</style>
