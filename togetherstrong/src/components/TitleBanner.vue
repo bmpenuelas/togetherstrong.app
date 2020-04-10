@@ -52,9 +52,9 @@ export default class TitleBanner extends Vue {
 
 <style scoped lang="scss">
 .TitleBanner {
-  margin: 0 auto 0 auto;
   width: 100%;
-  max-width: 700px;
+  max-width: 800px;
+  margin: 0 auto 0 auto;
 }
 
 .title-container {
@@ -123,5 +123,15 @@ $img-negative-margin: 50px;
 
 #rightSvg {
   margin-right: -$img-negative-margin;
+}
+
+@media all and (min-width: 600px) {
+  .title {
+    top: 35%;
+  }
+
+  .side-image {
+    max-width: 300px;
+  }
 }
 </style>

@@ -7,6 +7,7 @@
 <style lang="css">
 /* Font: Poppins */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed&display=swap');
 
 #app {
   width: 100%;
@@ -20,6 +21,8 @@
   touch-action: manipulation;
   -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
   -webkit-tap-highlight-color: transparent;
+
+  font-family: 'Poppins', sans-serif;
 
   /* Uncomment to debug divs */
   /* border: 1px solid #f00 !important; */
