@@ -9,6 +9,8 @@ import 'vuesax/dist/vuesax.css';
 import 'material-icons/iconfont/material-icons.css';
 import vuesvgicon from 'vue-svgicon';
 
+require('animate.css/animate.css');
+
 Vue.use(vuesax);
 
 Vue.use(vuesvgicon, {

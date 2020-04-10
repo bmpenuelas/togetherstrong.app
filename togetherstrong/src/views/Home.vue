@@ -9,8 +9,14 @@
           <b>WhatsApp</b>, <b>{{ $t('phone') }}</b> or <b>email</b>. No
           complicated setup, just one tap:
         </span>
-        <Chat :messages="landingChat" />
+        <Chat
+          class="animated slideInUp delay-2s slow"
+          :class="{ hidden: !delay2 }"
+          :messages="landingChat"
+        />
         <EmojiSurvey
+          class="animated slideInUp delay-3s slow"
+          :class="{ hidden: !delay3 }"
           v-model="selectedIndex"
           :emojis="emojis"
           @input="selectedEmoji = true"
@@ -39,6 +45,8 @@ export default class Home extends Vue {
   public selectedIndex = -1;
   public selectedEmoji = false;
   public innerHeight = '0px';
+  public delay2 = false;
+  public delay3 = false;
 
   public handleWindowResize(): void {
     this.innerHeight = window.innerHeight + 'px';
@@ -49,12 +57,18 @@ export default class Home extends Vue {
   }
 
   beforeDestroy() {
-    window.removeEventListener('resize', this. handleWindowResize);
+    window.removeEventListener('resize', this.handleWindowResize);
   }
 
   mounted() {
     this.handleWindowResize();
     window.addEventListener('resize', this.handleWindowResize);
+    setTimeout(() => {
+      this.delay2 = true;
+    }, 2000);
+    setTimeout(() => {
+      this.delay3 = true;
+    }, 3000);
   }
 }
 </script>
@@ -99,6 +113,10 @@ export default class Home extends Vue {
   .Chat {
     padding: 10px;
   }
+}
+
+.hidden {
+  opacity: 0;
 }
 
 @media all and (min-width: 400px) {

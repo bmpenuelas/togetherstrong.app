@@ -5,17 +5,17 @@
     <div class="title-container">
       <!-- Title text -->
       <div class="title">
-        <div class="title-part0">
+        <div class="title-part0 animated slideInDown slow">
           <svg viewBox="0 0 75 18">
             <text x="50%" y="12" text-anchor="middle">together</text>
           </svg>
         </div>
-        <div class="title-part1">
+        <div class="title-part1 animated slideInDown slow">
           <svg viewBox="0 0 56 19">
             <text x="50%" y="13" text-anchor="middle">strong</text>
           </svg>
         </div>
-        <div class="title-part2">
+        <div class="title-part2 animated slideInDown slow">
           <svg viewBox="0 0 95 18">
             <text x="50%" y="12" text-anchor="middle">.app</text>
           </svg>
@@ -23,8 +23,16 @@
       </div>
       <!-- Sides pictures -->
       <div class="images-container">
-        <inline-svg :src="leftSvg" class="side-image" id="leftSvg" />
-        <inline-svg :src="rightSvg" class="side-image" id="rightSvg" />
+        <inline-svg
+          :src="leftSvg"
+          class="side-image animated slideInLeft slow"
+          id="leftSvg"
+        />
+        <inline-svg
+          :src="rightSvg"
+          class="side-image animated slideInRight slow"
+          id="rightSvg"
+        />
       </div>
     </div>
   </div>
@@ -132,6 +140,46 @@ $img-negative-margin: 50px;
 
   .side-image {
     max-width: 300px;
+  }
+}
+</style>
+
+<style lang="css">
+#personLeft {
+  animation: float-x-pos 10s linear infinite;
+}
+
+#personRight {
+  animation: float-x-neg 10s linear infinite;
+}
+
+@keyframes float-x-pos {
+  0% {
+    transform: translate(0, 0);
+  }
+  25% {
+    transform: translate(-4px, 0);
+  }
+  75% {
+    transform: translate(4px, 0);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+@keyframes float-x-neg {
+  0% {
+    transform: translate(0, 0);
+  }
+  25% {
+    transform: translate(4px, 0);
+  }
+  75% {
+    transform: translate(-4px, 0);
+  }
+  100% {
+    transform: translate(0, 0);
   }
 }
 </style>
