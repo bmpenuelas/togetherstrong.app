@@ -11,7 +11,7 @@
 
 #app {
   width: 100%;
-  overflow: hidden;
+  overflow-x: hidden;
 }
 
 * {

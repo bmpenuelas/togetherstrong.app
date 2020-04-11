@@ -1,34 +1,63 @@
 <template>
   <div class="home">
     <div class="fist-screen" :style="{ height: innerHeight }">
-      <div class="top-intro"></div>
+      <div class="alert-top">
+        <vs-alert
+          class="alert-top limited-width"
+          :active="true"
+          color="rgb(111, 38, 224)"
+          icon="assignment_turned_in"
+        >
+          <span class="animated fadeIn slow">
+            <b>{{ $t('Free Psychological Support') }}</b> {{ $t('from') }}
+            <b>{{ $t('certified proffessionals') }}</b>
+            {{ $t('during the') }} <b>COVID-19</b> {{ $t('crisis') }}.
+          </span>
+        </vs-alert>
+      </div>
+      <div class="spacer limited-width" />
       <TitleBanner />
-      <div class="landing-survey">
-        <span>
-          <b>{{ $t('Anonymous') }}</b> {{ $t('if you want it, via') }}
-          <b>WhatsApp</b>, <b>{{ $t('phone') }}</b> or <b>email</b>. No
-          complicated setup, just one tap:
-        </span>
-        <Chat
-          class="animated slideInUp delay-2s slow"
-          :class="{ hidden: !delay2 }"
-          :messages="landingChat"
-        />
-        <EmojiSurvey
-          class="animated slideInUp delay-3s slow"
-          :class="{ hidden: !delay3 }"
-          v-model="selectedIndex"
-          :emojis="emojis"
-          @input="selectedEmoji = true"
-        />
+      <div class="spacer limited-width" />
+      <div class="help-or-get-help limited-width">
+        <vs-tabs alignment="fixed" v-model="selectedTabIndex">
+          <vs-tab :label="$t('Get help')" />
+          <vs-tab :label="$t('I want to help others')" />
+        </vs-tabs>
+        <div class="tabs-container">
+          <div class="get-help" :class="{ opacity0: selectedTabIndex != 0 }">
+            <span class="tab-description animated fadeIn delay-1s slow">
+              {{ $t('We will check on you') }} <b>{{ $t('every day') }}</b
+              >, {{ $t('and') }}
+              <b>{{ $t('get in touch if you are feeling down') }}</b
+              >. {{ $t('You just have to answer with one tap:') }}
+            </span>
+            <Chat
+              class="animated slideInUp delay-2s slow"
+              :class="{ opacity0: !delay2s }"
+              :messages="landingChat"
+            />
+            <EmojiSurvey
+              class="animated slideInUp delay-3s slow"
+              :class="{ opacity0: !delay3s }"
+              v-model="selectedEmojiIndex"
+              :emojis="emojis"
+              @input="selectedEmoji = true"
+            />
+          </div>
+          <div class="help-others" :class="{ opacity0: selectedTabIndex != 1 }">
+            <span class="tab-description">
+              I want to help
+            </span>
+          </div>
+        </div>
       </div>
     </div>
-    <TitleBanner v-show="selectedEmoji" />
+    <TitleBanner v-show="showPastFirst" />
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Vue, Component, Watch } from 'vue-property-decorator';
 import TitleBanner from '@/components/TitleBanner.vue';
 import Chat from '@/components/Chat.vue';
 import EmojiSurvey from '@/components/EmojiSurvey.vue';
@@ -42,18 +71,36 @@ import EmojiSurvey from '@/components/EmojiSurvey.vue';
 })
 export default class Home extends Vue {
   private emojis: EmojiList = ['bad', 'sad', 'neutral', 'smile'];
-  public selectedIndex = -1;
+  public selectedEmojiIndex = -1;
+  public selectedTabIndex = 0;
   public selectedEmoji = false;
   public innerHeight = '0px';
-  public delay2 = false;
-  public delay3 = false;
+  public delay2s = false;
+  public delay3s = false;
+  public showPastFirstSticky = false;
 
   public handleWindowResize(): void {
     this.innerHeight = window.innerHeight + 'px';
   }
 
   get landingChat(): chatMessages {
-    return [{ sender: true, text: this.$t('landing-survey') as string }];
+    return [
+      {
+        sender: true,
+        text: this.$t('How are you feeling these days?') as string,
+      },
+    ];
+  }
+
+  get showPastFirst(): boolean {
+    return this.selectedEmojiIndex != -1 || this.selectedTabIndex != 0;
+  }
+
+  @Watch('showPastFirst')
+  watcherShowPastFirst() {
+    if (this.showPastFirst) {
+      this.showPastFirstSticky = true;
+    }
   }
 
   beforeDestroy() {
@@ -64,63 +111,92 @@ export default class Home extends Vue {
     this.handleWindowResize();
     window.addEventListener('resize', this.handleWindowResize);
     setTimeout(() => {
-      this.delay2 = true;
+      this.delay2s = true;
     }, 2000);
     setTimeout(() => {
-      this.delay3 = true;
+      this.delay3s = true;
     }, 3000);
   }
 }
 </script>
 
 <style scoped lang="scss">
-.home {
-}
-
 .fist-screen {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
 
-.top-intro {
-  height: 15%;
+.alert-top {
+  flex: 0 0;
+}
+
+.spacer {
+  flex: 0.5 1;
 }
 
 .TitleBanner {
-  height: 275px;
+  flex: 0.5 0.5;
 }
 
-.landing-survey {
-  max-width: 700px;
-  height: calc(100% - 15% - 275px - 5px);
-  margin: 0 auto 0 auto;
+.help-or-get-help {
+  flex: 1 0;
+}
 
+.help-or-get-help {
+  width: 100%;
   display: flex;
   flex-direction: column;
+}
+
+.limited-width {
+  max-width: 700px;
+  margin: 0 auto 0 auto;
+}
+
+.tabs-container {
+  flex: 1;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+}
+
+.tabs-container div {
+  grid-row-start: 1;
+  grid-column-start: 1;
+}
+
+.get-help {
+  display: flex;
+  z-index: 1;
+  flex-direction: column;
   justify-content: flex-end;
-
-  span {
-    padding: 10px 10px 25px 10px;
-    line-height: 1em;
-    font-family: 'Roboto Condensed', sans-serif;
-
-    b {
-      font-weight: 600;
-    }
-  }
 
   .Chat {
     padding: 10px;
   }
 }
 
-.hidden {
-  opacity: 0;
+.tab-description {
+  margin-bottom: auto;
+
+  padding: 8px;
+  font-size: 14px;
+  line-height: 1rem;
+  text-align: justify;
+
+  b {
+    font-weight: 600;
+  }
 }
 
-@media all and (min-width: 400px) {
-  .landing-survey {
+.help-others {
+  z-index: 1;
+}
+
+@media all and (min-width: 600px) {
+  .get-help {
     span {
       font-size: 20px;
     }
@@ -129,5 +205,16 @@ export default class Home extends Vue {
       font-size: 25px;
     }
   }
+}
+
+.opacity0 {
+  opacity: 0;
+  z-index: -99;
+}
+</style>
+
+<style lang="scss">
+.help-or-get-help .vs-tabs--content {
+  padding: 0 !important;
 }
 </style>

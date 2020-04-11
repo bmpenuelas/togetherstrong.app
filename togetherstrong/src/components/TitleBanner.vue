@@ -2,36 +2,34 @@
   <!-- Title with pictures left and right -->
   <div class="TitleBanner">
     <!-- Container -->
-    <div class="title-container">
+    <div class="container">
       <!-- Title text -->
-      <div class="title">
-        <div class="title-part0 animated slideInDown slow">
+      <div class="title-container">
+        <div class="title-part-0 animated slideInDown slow">
           <svg viewBox="0 0 75 18">
             <text x="50%" y="12" text-anchor="middle">together</text>
           </svg>
         </div>
-        <div class="title-part1 animated slideInDown slow">
+        <div class="title-part-1 animated slideInDown slow">
           <svg viewBox="0 0 56 19">
             <text x="50%" y="13" text-anchor="middle">strong</text>
           </svg>
         </div>
-        <div class="title-part2 animated slideInDown slow">
+        <div class="title-part-2 animated slideInDown slow">
           <svg viewBox="0 0 95 18">
             <text x="50%" y="12" text-anchor="middle">.app</text>
           </svg>
         </div>
       </div>
       <!-- Sides pictures -->
-      <div class="images-container">
+      <div class="images-x-container">
         <inline-svg
           :src="leftSvg"
-          class="side-image animated slideInLeft slow"
-          id="leftSvg"
+          class="side-image leftSvg animated slideInLeft slow"
         />
         <inline-svg
           :src="rightSvg"
-          class="side-image animated slideInRight slow"
-          id="rightSvg"
+          class="side-image rightSvg animated slideInRight slow"
         />
       </div>
     </div>
@@ -65,17 +63,22 @@ export default class TitleBanner extends Vue {
   margin: 0 auto 0 auto;
 }
 
-.title-container {
-  position: relative;
+.container {
   width: 100%;
-  height: 275px;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
 }
 
-.title {
-  position: absolute;
-  top: 45%;
-  left: 35%;
+.container div {
+  grid-row-start: 1;
+  grid-column-start: 1;
+}
+
+.title-container {
   width: 30%;
+  margin-left: 35%;
+  margin-bottom: 20%;
   z-index: 2;
 
   display: flex;
@@ -88,12 +91,12 @@ export default class TitleBanner extends Vue {
   .title-part {
     font-weight: 600;
 
-    &1 {
+    &-1 {
       margin-top: -14px;
       margin-bottom: -25;
     }
 
-    &2 {
+    &-2 {
       margin-top: -20px;
       fill: red;
     }
@@ -107,10 +110,7 @@ export default class TitleBanner extends Vue {
   }
 }
 
-.images-container {
-  position: absolute;
-  top: 0;
-  left: 0;
+.images-x-container {
   width: 100%;
 
   z-index: 1;
@@ -125,17 +125,17 @@ $img-negative-margin: 50px;
   max-width: 250px;
 }
 
-#leftSvg {
+.leftSvg {
   margin-left: -$img-negative-margin;
 }
 
-#rightSvg {
+.rightSvg {
   margin-right: -$img-negative-margin;
 }
 
 @media all and (min-width: 600px) {
-  .title {
-    top: 35%;
+  .title-container {
+    margin-bottom: 10%;
   }
 
   .side-image {

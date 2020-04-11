@@ -46,7 +46,7 @@ export default class EmojiSurvey extends Vue {
   display: flex;
   justify-content: flex-end;
   margin: 10px;
-  border: 3px solid #b0a8b9;
+  border: 3px solid #d7cee0;
   border-radius: 500px;
 }
 
