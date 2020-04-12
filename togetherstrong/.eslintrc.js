@@ -23,7 +23,8 @@ module.exports = {
         "semi": true,
         "trailingComma": "es5"
       }
-    ]
+    ],
+    '@typescript-eslint/no-non-null-assertion': 'off'
   },
   overrides: [
     {

@@ -24,7 +24,7 @@
       <div v-if="!showCall" ref="spacer2" class="spacer" />
 
       <!-- Optional alert call to join -->
-      <div v-else class="alert-container limited-width">
+      <div v-else class="alert-container limited-width animated fadeInUp">
         <div class="alert-call">
           <div class="alert">
             <b>{{
@@ -44,7 +44,11 @@
       <!-- Choose get / give help -->
       <div class="help-or-get-help limited-width">
         <!-- Selector -->
-        <vs-tabs alignment="fixed" v-model="selectedTabIndex">
+        <vs-tabs
+          class="animated fadeIn delay-1s"
+          alignment="fixed"
+          v-model="selectedTabIndex"
+        >
           <vs-tab :label="$t('Get help')" />
           <vs-tab :label="$t('I want to help others')" />
         </vs-tabs>
@@ -60,13 +64,13 @@
               >. {{ $t('You just have to answer with one tap:') }}
             </span>
             <Chat
-              class="animated slideInUp delay-2s slow"
-              :class="{ opacity0: !delay2s }"
+              ref="chat0"
+              class="animated slideInUp slow"
               :messages="landingChat"
             />
             <EmojiSurvey
-              class="animated slideInUp delay-3s slow"
-              :class="{ opacity0: !delay3s }"
+              ref="emojiSurvey0"
+              class="animated slideInUp fadeIn slow"
               v-model="selectedEmojiIndex"
               :emojis="emojis"
               @input="selectedEmoji = true"
@@ -89,11 +93,17 @@
 </template>
 
 <script lang="ts">
+// Imports
 import { Vue, Component, Watch } from 'vue-property-decorator';
 import TitleBanner from '@/components/TitleBanner.vue';
 import Chat from '@/components/Chat.vue';
 import EmojiSurvey from '@/components/EmojiSurvey.vue';
 
+// TS types
+type delaySetting = [string, number];
+type delaySettings = delaySetting[];
+
+// Vue component
 @Component({
   components: {
     TitleBanner,
@@ -117,6 +127,22 @@ export default class Home extends Vue {
     this.innerHeight = window.innerHeight + 'px';
     this.spaceRemaining = (this.$refs.spacer1 as HTMLElement).clientHeight > 0;
     this.showCall = (this.$refs.spacer2 as HTMLElement).clientHeight > 40;
+  }
+
+  public showRef(item: Vue, show = true): void {
+    (item.$el as HTMLElement).style.opacity = show ? '1' : '0';
+  }
+
+  public delayShowElements(delaySettings: delaySettings) {
+    for (const delaySetting of delaySettings) {
+      const element = this.$refs[delaySetting[0]] as Vue;
+      this.showRef(element, false);
+      (element.$el as HTMLElement).style.animationDelay =
+        (delaySetting[1] - 100).toString() + 'ms';
+      setTimeout(() => {
+        this.showRef(element);
+      }, delaySetting[1]);
+    }
   }
 
   get landingChat(): chatMessages {
@@ -149,12 +175,12 @@ export default class Home extends Vue {
     setTimeout(() => {
       this.handleWindowResize();
     }, 100);
-    setTimeout(() => {
-      this.delay2s = true;
-    }, 2000);
-    setTimeout(() => {
-      this.delay3s = true;
-    }, 3000);
+
+    const delayToShow: delaySettings = [
+      ['chat0', 4000],
+      ['emojiSurvey0', 6000],
+    ];
+    this.delayShowElements(delayToShow);
   }
 }
 </script>
@@ -213,10 +239,13 @@ export default class Home extends Vue {
 
 .tabs-container {
   flex: 1;
+
   width: 100%;
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: 1fr;
+
+  overflow: hidden;
 }
 
 .tabs-container div {
@@ -249,6 +278,10 @@ export default class Home extends Vue {
 
 .help-others {
   z-index: 1;
+}
+
+.alert-container {
+  animation-delay: 10s;
 }
 
 .alert-call {
