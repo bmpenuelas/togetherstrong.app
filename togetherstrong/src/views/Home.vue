@@ -38,7 +38,7 @@
           </span>
         </div>
       </div>
-      <vs-popup :title="$t('Share this')" :active.sync="shareFallbackActive">
+      <vs-popup title="" :active.sync="shareFallbackActive">
         <social-sharing
           url="https://togetherstrong.app/during-covid-19"
           :title="$t('Free psychological support in your smartphone')"
@@ -50,36 +50,33 @@
           hashtags="togetherstrong,coronavirus"
           inline-template
         >
-          <div>
-            <network network="email">
-              <i class="fa fa-envelope"></i> Email
-            </network>
+          <div class="social-icons-container">
             <network network="facebook">
-              <i class="fa fa-facebook"></i> Facebook
-            </network>
-            <network network="line">
-              <i class="fa fa-line"></i> Line
-            </network>
-            <network network="linkedin">
-              <i class="fa fa-linkedin"></i> LinkedIn
-            </network>
-            <network network="reddit">
-              <i class="fa fa-reddit"></i> Reddit
-            </network>
-            <network network="telegram">
-              <i class="fa fa-telegram"></i> Telegram
+              <svgicon icon="facebook" class="icon" original />
             </network>
             <network network="twitter">
-              <i class="fa fa-twitter"></i> Twitter
-            </network>
-            <network network="vk">
-              <i class="fa fa-vk"></i> VKontakte
-            </network>
-            <network network="weibo">
-              <i class="fa fa-weibo"></i> Weibo
+              <svgicon icon="twitter" class="icon" original />
             </network>
             <network network="whatsapp">
-              <i class="fa fa-whatsapp"></i> Whatsapp
+              <svgicon icon="whatsapp" class="icon" original />
+            </network>
+            <network network="linkedin">
+              <svgicon icon="linkedin" class="icon" original />
+            </network>
+            <network network="vk">
+              <svgicon icon="vk" class="icon" original />
+            </network>
+            <network network="telegram">
+              <svgicon icon="telegram" class="icon" original />
+            </network>
+            <network network="line">
+              <svgicon icon="line" class="icon" original />
+            </network>
+            <network network="reddit">
+              <svgicon icon="reddit" class="icon" original />
+            </network>
+            <network network="email">
+              <svgicon icon="email" class="icon" original />
             </network>
           </div>
         </social-sharing>
@@ -176,7 +173,6 @@ type delaySettings = delaySetting[];
   },
 })
 export default class Home extends Mixins(WebShare) {
-  private emojis: EmojiList = ['bad', 'sad', 'neutral', 'smile'];
   public selectedEmojiIndex = -1;
   public selectedTabIndex = 0;
   public selectedEmoji = false;
@@ -186,12 +182,20 @@ export default class Home extends Mixins(WebShare) {
   public showCall = false;
   public spaceRemaining = false;
   public shareFallbackActive = false;
+  public shareNetworks: SocialIconsList = [
+    'email',
+    'facebook',
+    'line',
+    'linkedin',
+    'reddit',
+    'telegram',
+    'twitter',
+    'vk',
+    'weibo',
+    'whatsapp',
+  ];
 
-  // readonly shareStrings = {
-  //   url: this.$t('during-covid-19'),
-  //   text: this.$t('Free psychological support in your smartphone'),
-  //   title: this.$t('This can make a difference for you and many others'),
-  // };
+  private emojis: EmojiList = ['bad', 'sad', 'neutral', 'smile'];
 
   public handleWindowResize(): void {
     this.innerHeight = window.innerHeight + 'px';
@@ -240,6 +244,12 @@ export default class Home extends Mixins(WebShare) {
     window.removeEventListener('resize', this.handleWindowResize);
   }
 
+  created() {
+    for (const icon of this.shareNetworks) {
+      require('@/components/icons/' + icon);
+    }
+  }
+
   mounted() {
     this.handleWindowResize();
     window.addEventListener('resize', this.handleWindowResize);
@@ -282,7 +292,7 @@ export default class Home extends Mixins(WebShare) {
   left: 0;
   width: 100%;
   z-index: 3;
-  animation-delay: 10s;
+  // animation-delay: 11s;
 
   display: flex;
   justify-content: center;
@@ -439,5 +449,18 @@ export default class Home extends Mixins(WebShare) {
 <style lang="scss">
 .help-or-get-help .vs-tabs--content {
   padding: 0 !important;
+}
+
+.social-icons-container {
+  display: flex;
+  justify-content: space-around;
+  align-content: center;
+  flex-wrap: wrap;
+
+  span {
+    margin: 6px 0 6px 0;
+    width: 26%;
+    cursor: pointer;
+  }
 }
 </style>

@@ -21,3 +21,7 @@ interface chatMessage {
 }
 
 type chatMessages = chatMessage[];
+
+type AvailableSocialIcons = 'email' | 'facebook' | 'line' | 'linkedin' |
+  'reddit' | 'telegram' | 'twitter' | 'vk' | 'weibo' | 'whatsapp';
+type SocialIconsList = AvailableSocialIcons[];
