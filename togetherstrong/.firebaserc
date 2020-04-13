@@ -1,0 +1,6 @@
+{
+  "projects": {
+    "dev": "togetherstrongapp-dev",
+    "prod": "togetherstrongapp"
+  }
+}
