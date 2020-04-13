@@ -8,6 +8,7 @@ import vuesax from 'vuesax';
 import 'vuesax/dist/vuesax.css';
 import 'material-icons/iconfont/material-icons.css';
 import vuesvgicon from 'vue-svgicon';
+import socialsharing from 'vue-social-sharing';
 
 require('animate.css/animate.css');
 
@@ -16,6 +17,8 @@ Vue.use(vuesax);
 Vue.use(vuesvgicon, {
   classPrefix: 'SvgIcon-',
 });
+
+Vue.use(socialsharing);
 
 Vue.config.productionTip = false;
 

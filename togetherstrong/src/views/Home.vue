@@ -19,6 +19,72 @@
       </div>
       <div class="spacer limited-width" ref="spacer1" />
 
+      <!-- Share button -->
+      <div class="share-container">
+        <div class="share animated fadeIn">
+          <span
+            @click="
+              shareWith(
+                $t('during-covid-19'),
+                $t('Free psychological support in your smartphone'),
+                $t('This can make a difference for you and many others'),
+                webShareError,
+                webShareUnsupported
+              )
+            "
+          >
+            {{ $t('Share this') }}
+            <vs-icon icon="send" bg="#dff6de" size="18px" round />
+          </span>
+        </div>
+      </div>
+      <vs-popup :title="$t('Share this')" :active.sync="shareFallbackActive">
+        <social-sharing
+          url="https://togetherstrong.app/during-covid-19"
+          :title="$t('Free psychological support in your smartphone')"
+          :description="
+            $t(
+              'Free psychological support in your smartphone during the COVID-19 crisis from certified professionals.'
+            )
+          "
+          hashtags="togetherstrong,coronavirus"
+          inline-template
+        >
+          <div>
+            <network network="email">
+              <i class="fa fa-envelope"></i> Email
+            </network>
+            <network network="facebook">
+              <i class="fa fa-facebook"></i> Facebook
+            </network>
+            <network network="line">
+              <i class="fa fa-line"></i> Line
+            </network>
+            <network network="linkedin">
+              <i class="fa fa-linkedin"></i> LinkedIn
+            </network>
+            <network network="reddit">
+              <i class="fa fa-reddit"></i> Reddit
+            </network>
+            <network network="telegram">
+              <i class="fa fa-telegram"></i> Telegram
+            </network>
+            <network network="twitter">
+              <i class="fa fa-twitter"></i> Twitter
+            </network>
+            <network network="vk">
+              <i class="fa fa-vk"></i> VKontakte
+            </network>
+            <network network="weibo">
+              <i class="fa fa-weibo"></i> Weibo
+            </network>
+            <network network="whatsapp">
+              <i class="fa fa-whatsapp"></i> Whatsapp
+            </network>
+          </div>
+        </social-sharing>
+      </vs-popup>
+
       <!-- Title illustrations -->
       <TitleBanner />
       <div v-if="!showCall" ref="spacer2" class="spacer" />
@@ -86,15 +152,13 @@
         </div>
       </div>
     </div>
-
-    <!-- Content dependant on selection -->
-    <TitleBanner v-show="showPastFirst" />
   </div>
 </template>
 
 <script lang="ts">
 // Imports
-import { Vue, Component, Watch } from 'vue-property-decorator';
+import { Vue, Component, Mixins } from 'vue-property-decorator';
+import WebShare from '@/mixins/WebShare';
 import TitleBanner from '@/components/TitleBanner.vue';
 import Chat from '@/components/Chat.vue';
 import EmojiSurvey from '@/components/EmojiSurvey.vue';
@@ -111,7 +175,7 @@ type delaySettings = delaySetting[];
     EmojiSurvey,
   },
 })
-export default class Home extends Vue {
+export default class Home extends Mixins(WebShare) {
   private emojis: EmojiList = ['bad', 'sad', 'neutral', 'smile'];
   public selectedEmojiIndex = -1;
   public selectedTabIndex = 0;
@@ -119,14 +183,28 @@ export default class Home extends Vue {
   public innerHeight = '0px';
   public delay2s = false;
   public delay3s = false;
-  public showPastFirstSticky = false;
   public showCall = false;
   public spaceRemaining = false;
+  public shareFallbackActive = false;
+
+  // readonly shareStrings = {
+  //   url: this.$t('during-covid-19'),
+  //   text: this.$t('Free psychological support in your smartphone'),
+  //   title: this.$t('This can make a difference for you and many others'),
+  // };
 
   public handleWindowResize(): void {
     this.innerHeight = window.innerHeight + 'px';
     this.spaceRemaining = (this.$refs.spacer1 as HTMLElement).clientHeight > 0;
     this.showCall = (this.$refs.spacer2 as HTMLElement).clientHeight > 40;
+  }
+
+  public webShareError(error: Error): void {
+    error ? {} : {};
+  }
+
+  public webShareUnsupported(): void {
+    this.shareFallbackActive = true;
   }
 
   public showRef(item: Vue, show = true): void {
@@ -156,13 +234,6 @@ export default class Home extends Vue {
 
   get showPastFirst(): boolean {
     return this.selectedEmojiIndex != -1 || this.selectedTabIndex != 0;
-  }
-
-  @Watch('showPastFirst')
-  watcherShowPastFirst() {
-    if (this.showPastFirst) {
-      this.showPastFirstSticky = true;
-    }
   }
 
   beforeDestroy() {
@@ -203,6 +274,33 @@ export default class Home extends Vue {
 
 .spacer {
   flex: 0.5 10;
+}
+
+.share {
+  position: absolute;
+  top: 100px;
+  left: 0;
+  width: 100%;
+  z-index: 3;
+  animation-delay: 10s;
+
+  display: flex;
+  justify-content: center;
+
+  span {
+    background-color: white;
+    cursor: pointer;
+    font-size: 12px;
+    text-justify: center;
+    padding: 0 5px 5px 8px;
+    border: 1px solid #d7cee0;
+    border-radius: 500px;
+
+    .vs-icon {
+      position: relative;
+      top: 5px;
+    }
+  }
 }
 
 .side-description {
