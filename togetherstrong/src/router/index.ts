@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
 import Home from '../views/Home.vue';
+import { completeAuthWithEmailLink } from '@/utils/FirebaseAuth';
 
 Vue.use(VueRouter);
 
@@ -28,21 +29,22 @@ const routes: Array<RouteConfig> = [
     component: () =>
       import(/* webpackChunkName: 'get-help' */ '../views/GetHelp.vue'),
   },
-  {
-    path: '/login-link',
-    name: 'LoginLink',
-    // route level code-splitting
-    // this generates a separate chunk (login-link.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: 'login-link' */ '../views/LoginLink.vue'),
-  },
 ];
 
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes,
+});
+
+router.beforeEach((to, from, next) => {
+  if (
+    'loginlink' in to.query &&
+    to.query['loginlink'].toString().toLocaleLowerCase() == 'true'
+  ) {
+    completeAuthWithEmailLink();
+  }
+  next();
 });
 
 export default router;

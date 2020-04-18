@@ -1,47 +1,97 @@
 <template>
   <div class="GetHelp">
-    <vs-input
-      label-placeholder="email"
-      v-model="userMail"
-      type="email"
-      autocomplete="email"
-      :success="validEmail"
-    />
-    <vs-button
-      ref="emailInput"
-      @click="continueWithEmail()"
-      type="relief"
-      :disabled="false"
-    >
-      Email
-    </vs-button>
-    <i class="vs-icon notranslate icon-scale material-icons null"></i>
+    <div v-if="!loggedIn">
+      <vs-input
+        label-placeholder="email"
+        v-model="userMail"
+        type="email"
+        autocomplete="email"
+        :success="validEmail"
+      />
+      <vs-button
+        ref="emailInput"
+        @click="continueWithEmail()"
+        type="relief"
+        :disabled="!validEmail"
+      >
+        Login with email
+      </vs-button>
+    </div>
+    <div v-else>
+      <vs-button @click="signOut()" type="relief">
+        Log Out
+      </vs-button>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 // Imports
-import { Component, Mixins, Ref } from 'vue-property-decorator';
+import { Vue, Component } from 'vue-property-decorator';
 import EmojiSurvey from '@/components/EmojiSurvey.vue';
-import FirebaseAuth from '@/mixins/FirebaseAuth';
+import {
+  validateEmail,
+  authWithEmailLink,
+  signOut,
+} from '@/utils/FirebaseAuth';
+import { mapState } from 'vuex';
 
 // Vue component
 @Component({
   components: {
     EmojiSurvey,
   },
+  computed: {
+    ...mapState(['loggedIn']),
+  },
+  methods: {
+    signOut,
+  },
 })
-export default class Home extends Mixins(FirebaseAuth) {
-  @Ref('emailInput') readonly emailInput!: HTMLInputElement;
+export default class GetHelp extends Vue {
+  /* eslint-disable @typescript-eslint/no-explicit-any */
+  $vs: any;
 
-  public userMail = '';
+  get userMail() {
+    return this.$store.state.userInputEmail;
+  }
+
+  set userMail(value) {
+    this.$store.commit('userInputEmailMutation', value);
+  }
 
   get validEmail(): boolean {
-    return this.validateEmail(this.userMail);
+    return validateEmail(this.userMail);
   }
 
   private continueWithEmail() {
-    this.authWithEmailLink(this.userMail, { sa: 1, b: 2 });
+    authWithEmailLink(this.userMail, 'get-help');
+    this.$vs.notify({
+      title: 'Check your email',
+      text:
+        'Just click the link you will receive at ' +
+        this.userMail +
+        ' and you will be automatically logged-in',
+      color: 'warning',
+      fixed: true,
+    });
+  }
+
+  created() {
+    this.$store.watch(
+      () => this.$store.state.loggedIn,
+      (newValue, oldValue) => {
+        if (newValue && !oldValue) {
+          this.$vs.notify({
+            text: 'Successfully logged in',
+            color: 'success',
+          });
+        }
+        if (!newValue && oldValue) {
+          this.$vs.notify({ text: 'Logged out', color: 'danger' });
+        }
+      }
+    );
   }
 }
 </script>

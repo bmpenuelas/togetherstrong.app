@@ -1,5 +1,5 @@
 export interface UrlParameters {
-  [key: string]: string | number;
+  [key: string]: string | number | boolean;
 }
 
 export function objToUrl(params: UrlParameters): string {
