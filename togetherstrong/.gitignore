@@ -22,3 +22,6 @@ yarn-error.log*
 
 # Generated icons
 src/components/icons
+
+# Firebase
+hosting.*.cache

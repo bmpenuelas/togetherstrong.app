@@ -3,7 +3,7 @@
     <!-- First full window -->
     <div class="fist-screen" :style="{ 'min-height': innerHeight }">
       <!-- Top alert -->
-      <div class="alert-top">
+      <div class="alert-top animated slideInDown delay-1s">
         <vs-alert
           class="alert-top limited-width"
           :active="true"
@@ -154,7 +154,7 @@
 
 <script lang="ts">
 // Imports
-import { Vue, Component, Mixins } from 'vue-property-decorator';
+import { Vue, Component, Mixins, Watch } from 'vue-property-decorator';
 import WebShare from '@/mixins/WebShare';
 import TitleBanner from '@/components/TitleBanner.vue';
 import Chat from '@/components/Chat.vue';
@@ -177,8 +177,6 @@ export default class Home extends Mixins(WebShare) {
   public selectedTabIndex = 0;
   public selectedEmoji = false;
   public innerHeight = '0px';
-  public delay2s = false;
-  public delay3s = false;
   public showCall = false;
   public spaceRemaining = false;
   public shareFallbackActive = false;
@@ -199,8 +197,13 @@ export default class Home extends Mixins(WebShare) {
 
   public handleWindowResize(): void {
     this.innerHeight = window.innerHeight + 'px';
-    this.spaceRemaining = (this.$refs.spacer1 as HTMLElement).clientHeight > 0;
-    this.showCall = (this.$refs.spacer2 as HTMLElement).clientHeight > 40;
+    if (this.$refs.spacer1) {
+      this.spaceRemaining =
+        (this.$refs.spacer1 as HTMLElement).clientHeight > 0;
+    }
+    if (this.$refs.spacer2) {
+      this.showCall = (this.$refs.spacer2 as HTMLElement).clientHeight > 40;
+    }
   }
 
   public webShareError(error: Error): void {
@@ -240,6 +243,15 @@ export default class Home extends Mixins(WebShare) {
     return this.selectedEmojiIndex != -1 || this.selectedTabIndex != 0;
   }
 
+  @Watch('selectedEmojiIndex')
+  selectedEmojiIndexWatcher(newVal: number) {
+    if (newVal != -1) {
+      setTimeout(() => {
+        this.$router.push({ name: 'GetHelp' });
+      }, 750);
+    }
+  }
+
   beforeDestroy() {
     window.removeEventListener('resize', this.handleWindowResize);
   }
@@ -258,8 +270,8 @@ export default class Home extends Mixins(WebShare) {
     }, 100);
 
     const delayToShow: delaySettings = [
-      ['chat0', 4000],
-      ['emojiSurvey0', 6000],
+      ['chat0', 3000],
+      ['emojiSurvey0', 5000],
     ];
     this.delayShowElements(delayToShow);
   }
@@ -288,11 +300,11 @@ export default class Home extends Mixins(WebShare) {
 
 .share {
   position: absolute;
-  top: 100px;
+  top: 50px;
   left: 0;
   width: 100%;
   z-index: 3;
-  // animation-delay: 11s;
+  animation-delay: 8s;
 
   display: flex;
   justify-content: center;
@@ -389,7 +401,7 @@ export default class Home extends Mixins(WebShare) {
 }
 
 .alert-container {
-  animation-delay: 10s;
+  animation-delay: 8s;
 }
 
 .alert-call {
