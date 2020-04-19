@@ -9,7 +9,7 @@ export default new Vuex.Store({
   plugins: [
     createPersistedState(),
     createMutationsSharer({
-      predicate: ['setLoggedIn', 'userInputEmailMutation'],
+      predicate: ['loggedInMutation', 'userMutation'],
     }),
   ],
 
