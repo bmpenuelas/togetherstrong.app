@@ -78,6 +78,19 @@
         </vs-button>
       </div>
     </div>
+
+    <div class="margin-10">
+      <h3>loggedIn</h3>
+      {{ loggedIn }}
+    </div>
+    <div class="margin-10">
+      <h3>firebaseUser</h3>
+      {{ firebaseUser }}
+    </div>
+    <div class="margin-10">
+      <h3>user</h3>
+      {{ user }}
+    </div>
   </div>
 </template>
 
@@ -102,7 +115,7 @@ import { mapState } from 'vuex';
     EmojiSurvey,
   },
   computed: {
-    ...mapState(['loggedIn']),
+    ...mapState(['loggedIn', 'firebaseUser', 'user']),
   },
   methods: {
     signOut,

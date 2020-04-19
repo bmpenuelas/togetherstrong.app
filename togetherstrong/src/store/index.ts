@@ -15,9 +15,10 @@ export default new Vuex.Store({
 
   state: {
     loggedIn: false,
+    firebaseUser: {}, // user object from firebase auth
+    user: {}, // user object with the fields used by this app
     userInputEmail: '',
     userInputPhone: '',
-    firebaseUser: '',
     tokenGoogle: '',
   },
 
@@ -34,6 +35,10 @@ export default new Vuex.Store({
       state.userInputPhone = value;
     },
 
+    userMutation(state, value) {
+      state.user = value;
+    },
+
     firebaseUserMutation(state, value) {
       state.firebaseUser = value;
     },
@@ -43,7 +48,21 @@ export default new Vuex.Store({
     },
   },
 
-  actions: {},
+  actions: {
+    setUserAction({ commit }, user) {
+      commit('loggedInMutation', user !== null);
+      commit('firebaseUserMutation', user || {});
+      if (user) {
+        commit('userMutation', {
+          displayName: user.displayName,
+          email: user.email,
+          uid: user.uid,
+        });
+      } else {
+        commit('userMutation', {});
+      }
+    },
+  },
 
   modules: {},
 });

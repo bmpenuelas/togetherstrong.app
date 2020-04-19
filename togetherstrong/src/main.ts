@@ -40,6 +40,10 @@ if (process.env.NODE_ENV == 'development') {
   });
 }
 
+firebase.auth().onAuthStateChanged(user => {
+  store.dispatch('setUserAction', user);
+});
+
 Vue.config.productionTip = false;
 
 new Vue({

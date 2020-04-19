@@ -14,7 +14,8 @@ export function authSetPersistence(persist: boolean): void {
 export function authWithEmailLink(
   email: string,
   url: string,
-  parameters: UrlParameters = {}
+  parameters: UrlParameters = {},
+  errorCallback?: Callback
 ): void {
   parameters['loginlink'] = true;
   const actionCodeSettings = {
@@ -34,11 +35,11 @@ export function authWithEmailLink(
       window.localStorage.setItem('completeAuthWithEmailLink', 'true');
     })
     .catch(function(error) {
-      alert(error);
+      if (errorCallback) errorCallback(error);
     });
 }
 
-export function completeAuthWithEmailLink(): void {
+export function completeAuthWithEmailLink(errorCallback?: Callback): void {
   if (firebase.auth().isSignInWithEmailLink(window.location.href)) {
     let email: string = window.localStorage.getItem('emailForSignIn') || '';
     if (!email) {
@@ -51,15 +52,10 @@ export function completeAuthWithEmailLink(): void {
         console.log(result);
         window.localStorage.removeItem('emailForSignIn');
         window.localStorage.removeItem('completeAuthWithEmailLink');
-        store.commit('firebaseUserMutation', result.user);
-        store.commit('loggedInMutation', true);
       })
-      .catch(() => {
-        alert('Invalid login link');
-        store.commit('loggedInMutation', false);
+      .catch(error => {
+        if (errorCallback) errorCallback(error);
       });
-  } else {
-    store.commit('loggedInMutation', false);
   }
 }
 
@@ -83,8 +79,6 @@ export function completeAuthWithGoogle(errorCallback?: Callback): void {
           (result.credential as firebase.auth.OAuthCredential).accessToken
         );
       }
-      store.commit('firebaseUserMutation', result.user);
-      store.commit('loggedInMutation', true);
     })
     .catch(function(error) {
       if (errorCallback) errorCallback(error);
@@ -117,8 +111,6 @@ export function completeAuthWithPhone(
   window.confirmationResult
     .confirm(code)
     .then(result => {
-      store.commit('firebaseUserMutation', result.user);
-      store.commit('loggedInMutation', true);
       if (callback) callback(result);
     })
     .catch(error => {
@@ -126,14 +118,16 @@ export function completeAuthWithPhone(
     });
 }
 
-export function signOut() {
+export function signOut(callback?: Callback, errorCallback?: Callback) {
   firebase
     .auth()
     .signOut()
-    .then(() => {
-      store.commit('loggedInMutation', false);
+    .then(result => {
+      if (callback) callback(result);
     })
-    .catch();
+    .catch(error => {
+      if (errorCallback) errorCallback(error);
+    });
 }
 
 export function validateEmail(email: string): boolean {
