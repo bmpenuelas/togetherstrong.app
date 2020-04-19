@@ -16,6 +16,9 @@ export default new Vuex.Store({
   state: {
     loggedIn: false,
     userInputEmail: '',
+    userInputPhone: '',
+    firebaseUser: '',
+    tokenGoogle: '',
   },
 
   mutations: {
@@ -25,6 +28,18 @@ export default new Vuex.Store({
 
     userInputEmailMutation(state, value) {
       state.userInputEmail = value;
+    },
+
+    userInputPhoneMutation(state, value) {
+      state.userInputPhone = value;
+    },
+
+    firebaseUserMutation(state, value) {
+      state.firebaseUser = value;
+    },
+
+    tokenGoogleMutation(state, value) {
+      state.tokenGoogle = value;
     },
   },
 

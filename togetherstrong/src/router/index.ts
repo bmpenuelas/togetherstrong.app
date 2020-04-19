@@ -1,7 +1,10 @@
 import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
 import Home from '../views/Home.vue';
-import { completeAuthWithEmailLink } from '@/utils/FirebaseAuth';
+import {
+  completeAuthWithEmailLink,
+  completeAuthWithGoogle,
+} from '@/utils/FirebaseAuth';
 
 Vue.use(VueRouter);
 
@@ -38,11 +41,10 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  if (
-    'loginlink' in to.query &&
-    to.query['loginlink'].toString().toLocaleLowerCase() == 'true'
-  ) {
+  if (window.localStorage.getItem('completeAuthWithEmailLink')) {
     completeAuthWithEmailLink();
+  } else if (window.localStorage.getItem('completeAuthWithGoogle')) {
+    completeAuthWithGoogle();
   }
   next();
 });
