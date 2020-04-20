@@ -4,6 +4,30 @@ import * as firebase from 'firebase/app';
 import 'firebase/auth';
 import store from '@/store';
 
+export async function initFirebase() {
+  if (process.env.NODE_ENV == 'development') {
+    const firebaseJsonConfig = {
+      apiKey: 'AIzaSyCI6caZbmT4KGNAk_hvzmVr6LdyygZ0BWI',
+      authDomain: 'togetherstrongapp-dev.firebaseapp.com',
+      databaseURL: 'https://togetherstrongapp-dev.firebaseio.com',
+      projectId: 'togetherstrongapp-dev',
+      storageBucket: 'togetherstrongapp-dev.appspot.com',
+      messagingSenderId: '465635438291',
+      appId: '1:465635438291:web:f7a1a34b8fd7f44b342e26',
+      measurementId: 'G-DSC0ES34VB',
+    };
+    firebase.initializeApp(firebaseJsonConfig);
+  } else {
+    await fetch('/__/firebase/init.json').then(async response => {
+      firebase.initializeApp(await response.json());
+    });
+  }
+
+  firebase.auth().onAuthStateChanged(user => {
+    store.dispatch('setUserAction', user);
+  });
+}
+
 export function authSetPersistence(persist: boolean): void {
   const persistenceType = persist
     ? firebase.auth.Auth.Persistence.LOCAL
@@ -39,7 +63,10 @@ export function authWithEmailLink(
     });
 }
 
-export function completeAuthWithEmailLink(errorCallback?: Callback): void {
+export function completeAuthWithEmailLink(
+  callback?: Callback,
+  errorCallback?: Callback
+): void {
   if (firebase.auth().isSignInWithEmailLink(window.location.href)) {
     let email: string = window.localStorage.getItem('emailForSignIn') || '';
     if (!email) {
@@ -49,7 +76,7 @@ export function completeAuthWithEmailLink(errorCallback?: Callback): void {
       .auth()
       .signInWithEmailLink(email, window.location.href)
       .then(result => {
-        console.log(result);
+        if (callback) callback(result);
         window.localStorage.removeItem('emailForSignIn');
         window.localStorage.removeItem('completeAuthWithEmailLink');
       })

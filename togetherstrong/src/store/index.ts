@@ -56,6 +56,8 @@ export default new Vuex.Store({
         commit('userMutation', {
           displayName: user.displayName,
           email: user.email,
+          photoUrl: user.photoURL,
+          emailVerified: user.emailVerified,
           uid: user.uid,
         });
       } else {
