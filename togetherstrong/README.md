@@ -1,29 +1,61 @@
-# togetherstrong
+# TogetherStrong
 
-## Project setup
+Dev: [https://togetherstrongapp-dev.web.app/](https://togetherstrongapp-dev.web.app/)
+
+Prod: [https://togetherstrong.app/](https://togetherstrong.app/)
+
+## Using
+
+### Project setup
+
 ```
 npm install
 ```
 
-### Compiles and hot-reloads for development
+### Install Firebase tools
+
+```
+npm i -g firebase-tools
+```
+
+### Set Firebase development environment
+
+```
+firebase use dev
+```
+
+#### Compiles and hot-reloads for development
+
 ```
 npm run serve
 ```
 
-### Compiles and minifies for production
-```
-npm run build
-```
+#### Run your unit tests
 
-### Run your unit tests
 ```
 npm run test:unit
 ```
 
-### Lints and fixes files
+#### Lints and fixes files
+
 ```
 npm run lint
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+#### Compiles and minifies for production
+
+```
+npm run build
+```
+
+### Set Firebase production environment
+
+```
+firebase use prod
+```
+
+#### Compiles and deploys (to dev/prod depending on firebase environment)
+
+```
+npm run deploy
+```
