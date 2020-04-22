@@ -10,18 +10,19 @@ interface Navigator {
 }
 
 // Custom
+/* eslint-disable @typescript-eslint/no-explicit-any */
 type Callback = (...args: any[]) => void;
 
 type AvailableEmojis = 'bad' | 'neutral' | 'sad' | 'sick' | 'smile';
 
 type EmojiList = AvailableEmojis[];
 
-interface chatMessage {
+interface ChatMessage {
   sender: boolean;
   text: string;
 }
 
-type chatMessages = chatMessage[];
+type ChatMessages = ChatMessage[];
 
 type AvailableSocialIcons =
   | 'email'

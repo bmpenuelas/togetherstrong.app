@@ -230,7 +230,7 @@ export default class Home extends Mixins(WebShare) {
     }
   }
 
-  get landingChat(): chatMessages {
+  get landingChat(): ChatMessages {
     return [
       {
         sender: true,

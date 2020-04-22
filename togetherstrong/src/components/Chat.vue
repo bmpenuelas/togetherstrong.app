@@ -22,7 +22,7 @@ type chatOrder = [boolean, boolean][];
 
 @Component
 export default class Chat extends Vue {
-  @Prop(Array) private messages!: chatMessages;
+  @Prop(Array) private messages!: ChatMessages;
 
   get computedOrder(): chatOrder {
     const newOrder: chatOrder = Array(this.messages.length).fill([

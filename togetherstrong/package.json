@@ -3,14 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "icons": "vsvg -s src/assets/icons -t src/components/icons",
     "serve": "vue-cli-service serve",
-    "prebuild": "npm run icons",
     "build": "vue-cli-service build",
-    "deploy": "npm run build && firebase deploy",
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint",
-    "i18n:report": "vue-cli-service i18n:report --src './src/**/*.?(js|vue)' --locales './src/locales/**/*.json'"
+    "deploy": "npm run build && firebase deploy",
+    "i18n:report": "vue-cli-service i18n:report --src './src/**/*.?(js|vue)' --locales './src/locales/**/*.json'",
+    "icons": "vsvg -s src/assets/icons -t src/components/icons",
+    "prebuild": "npm run icons"
   },
   "dependencies": {
     "animate.css": "^3.7.2",
@@ -39,7 +39,7 @@
     "@typescript-eslint/parser": "^2.26.0",
     "@vue/cli-plugin-babel": "~4.3.0",
     "@vue/cli-plugin-eslint": "~4.3.0",
-    "@vue/cli-plugin-pwa": "~4.3.0",
+    "@vue/cli-plugin-pwa": "^4.3.1",
     "@vue/cli-plugin-router": "~4.3.0",
     "@vue/cli-plugin-typescript": "~4.3.0",
     "@vue/cli-plugin-unit-jest": "~4.3.0",
