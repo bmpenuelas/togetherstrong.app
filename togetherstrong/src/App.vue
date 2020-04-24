@@ -1,8 +1,32 @@
 <template>
   <div id="app">
+    <vs-alert :active="readyToInstall">
+      Ready to install!
+    </vs-alert>
+
     <router-view />
   </div>
 </template>
+
+<script lang="ts">
+// Imports
+import { Vue, Component } from 'vue-property-decorator';
+
+// Vue component
+@Component
+export default class GetHelp extends Vue {
+  public readyToInstall = false;
+
+  created() {
+    this.$root.deferredPrompt = null;
+    window.addEventListener('beforeinstallprompt', e => {
+      e.preventDefault();
+      this.$root.deferredPrompt = e;
+      this.readyToInstall = true;
+    });
+  }
+}
+</script>
 
 <style lang="css">
 /* Font: Poppins */

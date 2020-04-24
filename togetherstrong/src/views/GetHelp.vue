@@ -163,7 +163,7 @@ export default class GetHelp extends Vue {
         this.userInputEmail +
         ' and you will be automatically logged-in',
       color: 'warning',
-      fixed: true,
+      time: 8000,
     });
   }
 

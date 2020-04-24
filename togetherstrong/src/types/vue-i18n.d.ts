@@ -14,6 +14,7 @@ declare module 'vue-i18n/types' {
 declare module 'vue/types/vue' {
   interface Vue {
     $t: typeof VueI18n.prototype.t;
+    deferredPrompt: Event | null;
   }
 
   interface VueConstructor<V extends Vue = Vue> {
