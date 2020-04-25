@@ -32,6 +32,15 @@ const routes: Array<RouteConfig> = [
     component: () =>
       import(/* webpackChunkName: 'get-help' */ '../views/GetHelp.vue'),
   },
+  {
+    path: '/share-target',
+    name: 'ShareTarget',
+    // route level code-splitting
+    // this generates a separate chunk (share-target.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () =>
+      import(/* webpackChunkName: 'share-target' */ '../views/ShareTarget.vue'),
+  },
 ];
 
 const router = new VueRouter({

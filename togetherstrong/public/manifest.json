@@ -1,7 +1,7 @@
 {
   "name": "TogetherStrong",
   "short_name": "TogetherStrong",
-  "theme_color": "#5B3CC4",
+  "theme_color": "#FFFFFF",
   "icons": [
     {
       "src": "img/icons/icon-72x72.png",
@@ -57,7 +57,7 @@
   "display": "standalone",
   "background_color": "#FFFFFF",
   "share_target": {
-    "action": "/share-target/",
+    "action": "/share-target",
     "method": "GET",
     "params": {
       "title": "title",
