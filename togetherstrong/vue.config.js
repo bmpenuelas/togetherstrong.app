@@ -1,8 +1,5 @@
-var path = require('path');
-
 module.exports = {
   devServer: {
-    contentBase: path.join(__dirname, 'dist'),
     open: process.platform === 'darwin',
     host: '0.0.0.0',
     port: 8080,

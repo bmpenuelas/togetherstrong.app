@@ -14,7 +14,7 @@ import { Vue, Component } from 'vue-property-decorator';
 
 // Vue component
 @Component
-export default class GetHelp extends Vue {
+export default class App extends Vue {
   public readyToInstall = false;
 
   created() {

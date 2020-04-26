@@ -4,6 +4,7 @@
       Login methods (WIP)
     </h1>
 
+    <!-- Register/Login with email -->
     <vs-divider position="center">
       Register/Log-in with one-time-email
     </vs-divider>
@@ -26,6 +27,7 @@
       </vs-button>
     </div>
 
+    <!-- Register/Login with Google -->
     <vs-divider position="center">
       Register/Log-in with Google
     </vs-divider>
@@ -35,6 +37,7 @@
       </vs-button>
     </div>
 
+    <!-- Register/Login with phone no. -->
     <vs-divider position="center">
       Register/Log-in with Phone no.
     </vs-divider>
@@ -71,6 +74,23 @@
       </vs-button>
     </div>
 
+    <!-- Schedule notifications with Web API -->
+    <div v-if="!notificationsGranted">
+      <div class="margin-10">
+        <vs-button @click="notificationsPermission()" type="relief">
+          Allow notifications
+        </vs-button>
+      </div>
+    </div>
+    <div v-else>
+      <div class="margin-10">
+        <vs-button @click="scheduleNotification()" type="relief">
+          Schedule Notification
+        </vs-button>
+      </div>
+    </div>
+
+    <!-- Log Out -->
     <div v-if="loggedIn">
       <div class="margin-10">
         <vs-button @click="signOut()" type="relief">
@@ -79,6 +99,7 @@
       </div>
     </div>
 
+    <!-- Available login details -->
     <div class="margin-10">
       <h3>loggedIn</h3>
       {{ loggedIn }}
@@ -124,7 +145,10 @@ import { mapState } from 'vuex';
 export default class GetHelp extends Vue {
   /* eslint-disable @typescript-eslint/no-explicit-any */
   $vs: any;
+
   public smsCode = '';
+
+  public canNotify = false;
 
   public appVerifier!: firebase.auth.ApplicationVerifier;
 
@@ -152,6 +176,20 @@ export default class GetHelp extends Vue {
 
   get validCode(): boolean {
     return Boolean(this.smsCode);
+  }
+
+  get notificationsGranted(): boolean {
+    return this.$webnotifications.granted;
+  }
+
+  private async notificationsPermission() {
+    await this.$webnotifications.requestPermission();
+  }
+
+  private async scheduleNotification() {
+    await this.$webnotifications.showNotification('How are you?', {
+      body: 'Just anser with a tap',
+    });
   }
 
   private continueWithEmail() {

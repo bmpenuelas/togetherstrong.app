@@ -5,13 +5,14 @@ import router from './router';
 import store from './store';
 import i18n from './i18n';
 import vuesax from 'vuesax';
-import 'vuesax/dist/vuesax.css';
-import 'material-icons/iconfont/material-icons.css';
 import vuesvgicon from 'vue-svgicon';
 import socialsharing from 'vue-social-sharing';
+import webnotifications from '@/plugins/WebNotifications';
 import { initFirebase } from '@/utils/FirebaseAuth';
 
-require('animate.css/animate.css');
+import 'vuesax/dist/vuesax.css';
+import 'material-icons/iconfont/material-icons.css';
+import 'animate.css/animate.css';
 
 Vue.use(vuesax);
 
@@ -20,6 +21,8 @@ Vue.use(vuesvgicon, {
 });
 
 Vue.use(socialsharing);
+
+Vue.use(webnotifications);
 
 Vue.config.productionTip = false;
 
