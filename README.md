@@ -3,8 +3,12 @@
 Dev: [https://togetherstrongapp-dev.web.app/](https://togetherstrongapp-dev.web.app/)
 
 Prod: [https://togetherstrong.app/](https://togetherstrong.app/)
+<br>
+<br>
 
-## Using
+![alt text](media/screenshot_0.png 'together strong')
+<br>
+<br>
 
 ### Project setup
 
